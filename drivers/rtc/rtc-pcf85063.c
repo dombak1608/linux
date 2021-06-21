@@ -545,6 +545,11 @@ static int pcf85063_probe(struct i2c_client *client)
 		return err;
 	}
 
+	err = regmap_update_bits(pcf85063->regmap, PCF85063_REG_SC,
+			PCF85063_REG_SC_OS, 0);	//clearing oscilator stop flag
+	if (err)
+		return err;
+
 	pcf85063->rtc = devm_rtc_allocate_device(&client->dev);
 	if (IS_ERR(pcf85063->rtc))
 		return PTR_ERR(pcf85063->rtc);
